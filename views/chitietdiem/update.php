@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Hocsinh;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */

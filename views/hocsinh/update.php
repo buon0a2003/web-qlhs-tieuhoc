@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /** @var app\models\Lop $lopModel */
 
 
-$this->title = 'Update Hocsinh: ' . $model->hsid;
+$this->title = 'Sửa Học sinh ';
 $this->params['breadcrumbs'][] = ['label' => 'Học sinh', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->hsid, 'url' => ['view', 'hsid' => $model->hsid]];
 $this->params['breadcrumbs'][] = 'Update';

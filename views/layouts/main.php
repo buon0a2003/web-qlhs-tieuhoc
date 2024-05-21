@@ -55,12 +55,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             [
                 'label'=> 'Điểm',
                 'items'=>[
+                    ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                    
+                    ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                    
                     ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
 
-                    ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
-
-                    ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                    ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
                 ],
+                'contenOptions' => ['class'=>'bg-dark'],
             ],
             ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
             ['label' => 'Lớp', 'url' => ['/lop/index']],

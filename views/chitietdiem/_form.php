@@ -22,6 +22,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'mahocsinh')->textInput(['readonly' => false]) ?>
 
+    <?= $form->field($model, 'mahocsinh') ?>
+
     <?= $form->field($model, 'diem_giua_ki1')->textInput() ?>
 
     <?= $form->field($model, 'diem_ki1')->textInput() ?>

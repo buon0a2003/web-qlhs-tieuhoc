@@ -79,4 +79,9 @@ class Chitietdiem extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Monhoc::class, ['idmonhoc' => 'mamon']);
     }
+
+    public function getTenhocsinh() 
+    {
+        return $this->hasOne(Hocsinh::class, ['hsid' => 'mahocsinh']);
+    }
 }

@@ -7,8 +7,8 @@ use yii\helpers\Html;
 /** @var app\models\Monhoc $monhocModel */
 
 
-$this->title = 'Create Giaovien';
-$this->params['breadcrumbs'][] = ['label' => 'Giaoviens', 'url' => ['index']];
+$this->title = 'Thêm giáo viên';
+$this->params['breadcrumbs'][] = ['label' => 'Giáo viên', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="giaovien-create">

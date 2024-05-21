@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /** @var app\models\Lop $lopModel */
 
 
-$this->title = 'Create Hocsinh';
+$this->title = 'Thêm học sinh';
 $this->params['breadcrumbs'][] = ['label' => 'Học sinh', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
