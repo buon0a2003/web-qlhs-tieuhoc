@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options' => ['style' => 'max-width:50%;'],
         'columns' => [
             // ['class' => 'yii\grid\SerialColumn'],
 
@@ -35,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Lop $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'lopid' => $model->lopid]);
-                 }
+                },
+                 'contentOptions' => ['style' => 'width: 13%']
             ],
         ],
     ]); ?>

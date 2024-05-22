@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
 
 /** @var yii\web\View $this */
 /** @var app\models\Giaovien $model */
@@ -16,7 +17,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'hotengv')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ngay_sinh')->textInput() ?>
+    <?= $form->field($model, 'ngay_sinh')->widget(DatePicker::class, [
+        'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+        'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
+        'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
+        'options' => ['placeholder' => 'Chọn ngày sinh'],
+        'pluginOptions' => [
+            'autoclose' => true,
+            'format' => 'yyyy/mm/dd',
+        ]
+    ]);?>
 
     <?= $form->field($model, 'diachi')->textInput(['maxlength' => true]) ?>
 

@@ -11,6 +11,7 @@ use app\models\searchs\ViewChitietHsTienganhSearch;
 use app\models\searchs\ViewChitietHsTiengvietSearch;
 use app\models\searchs\ViewChitietHsToanSearch;
 use app\models\Hocsinh;
+use app\models\searchs\HocsinhSearch;
 use app\models\searchs\MonhocSearch;
 
 /**
@@ -94,6 +95,7 @@ class ChitietdiemController extends Controller
     {
         $model = new Chitietdiem();
         $monhocModel = MonhocSearch::find()->all();
+        $hocsinhModel = HocsinhSearch::find()->all();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -106,6 +108,7 @@ class ChitietdiemController extends Controller
         return $this->render('create', [
             'model' => $model,
             'monhocModel' => $monhocModel,
+            'hocsinhModel' => $hocsinhModel,
         ]);
     }
 

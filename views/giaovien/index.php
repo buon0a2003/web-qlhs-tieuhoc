@@ -49,7 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Giaovien $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'gvid' => $model->gvid]);
-                 }
+                 },
+                 'contentOptions' => ['style' => 'width: 6%']
+                 
             ],
         ],
     ]); ?>

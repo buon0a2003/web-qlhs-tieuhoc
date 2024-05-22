@@ -40,7 +40,13 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'attribute' => 'gioitinh', 
-                'contentOptions' => ['style' => 'width:1%']
+                'contentOptions' => ['style' => 'width:1%'],
+                'value' => function($dataProvider){
+                    if ($dataProvider->gioitinh == 'male')
+                        return 'Nam';
+                    else
+                        return 'Nữ';
+                }
             ],
 
             [

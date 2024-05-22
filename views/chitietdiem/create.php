@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Chitietdiem $model */
 /** @var app\models\Monhoc $monhocModel */
+/** @var app\models\Hocsinh $hocsinhModel */
 
 
 $this->title = 'Thêm điểm';
@@ -18,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'monhocModel' => $monhocModel,
+        'hocsinhModel' => $hocsinhModel,
+
     ]) ?>
 
 </div>

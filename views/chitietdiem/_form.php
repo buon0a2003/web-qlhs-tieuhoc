@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 /** @var app\models\Chitietdiem $model */
 /** @var yii\widgets\ActiveForm $form */
 /** @var app\models\Monhoc $monhocModel */
+/** @var app\models\Hocsinh $hocsinhModel */
 
 ?>
 
@@ -20,9 +21,10 @@ use yii\widgets\ActiveForm;
     <!-- <?= $form->field($model, 'mamon')->textInput() ?> -->
     <?= $form->field($model, 'mamon')->dropDownList(yii\helpers\ArrayHelper::map($monhocModel, 'idmonhoc', 'tenmon')) ?>
 
-    <?= $form->field($model, 'mahocsinh')->textInput(['readonly' => false]) ?>
+    <!-- <?= $form->field($model, 'mahocsinh')->textInput() ?> -->
+    <?= $form->field($model, 'mahocsinh')->dropDownList(yii\helpers\ArrayHelper::map($hocsinhModel, 'hsid', 'tenhs')) ?>
 
-    <?= $form->field($model, 'mahocsinh') ?>
+    <!-- <?= $form->field($model, 'mahocsinh') ?> -->
 
     <?= $form->field($model, 'diem_giua_ki1')->textInput() ?>
 

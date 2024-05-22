@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
 
 /** @var yii\web\View $this */
 /** @var app\models\hocsinh $model */
@@ -20,7 +21,18 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'gioitinh')->dropDownList([ 'male' => 'Nam', 'female' => 'Nữ', ], ['prompt' => 'chọn giới tính']) ?>
 
-    <?= $form->field($model, 'ngaysinh')->textInput() ?>
+    <!-- <?= $form->field($model, 'ngaysinh')->textInput() ?> -->
+
+    <?= $form->field($model, 'ngaysinh')->widget(DatePicker::class, [
+        'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+        'pickerIcon' => '<i class="fas fa-calendar-alt text-primary"></i>',
+        'removeIcon' => '<i class="fas fa-trash text-danger"></i>',
+        'options' => ['placeholder' => 'Chọn ngày sinh'],
+        'pluginOptions' => [
+            'autoclose' => true,
+            'format' => 'yyyy/mm/dd',
+        ]
+    ]);?>
 
     <?= $form->field($model, 'sdtbome')->textInput(['maxlength' => true]) ?>
 
