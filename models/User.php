@@ -2,43 +2,77 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use app\assets\function\encrypt as FunctionEncrypt;
+use Yii;
+use yii\web\IdentityInterface;
+use app\assets\thuvien\Encrypt;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $user_id
+ * @property string $username
+ * @property string $password
+ * @property int|null $role_id
+ *
+ * @property Role $role
+ */
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
      * {@inheritdoc}
      */
+    public function rules()
+    {
+        return [
+            [['user_id', 'username', 'password'], 'required'],
+            [['user_id', 'role_id'], 'integer'],
+            [['username'], 'string', 'max' => 50],
+            [['password'], 'string', 'max' => 255],
+            [['user_id'], 'unique'],
+            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'role_id']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'User ID',
+            'username' => 'Tên tài khoản',
+            'password' => 'Mật khẩu',
+            'role_id' => 'Role ID',
+        ];
+    }
+
+    /**
+     * Gets query for [[Role]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRole()
+    {
+        return $this->hasOne(Role::class, ['role_id' => 'role_id']);
+    }
+
+
+    public static function findIdentity($id)
+    {
+        return static::findOne(['user_id' => $id]);
+    }
+
+
     public static function findIdentityByAccessToken($token, $type = null)
     {
         foreach (self::$users as $user) {
@@ -50,45 +84,25 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         return null;
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['username' => $username]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
-        return $this->id;
+        return $this->user_id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function getAuthKey()
     {
-        return $this->authKey;
+        return "dmm";
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return "dmm";
     }
 
     /**
@@ -97,8 +111,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+    public function validatePassword($password){
+        return Encrypt::encrypt($password) === $this->password;
     }
 }

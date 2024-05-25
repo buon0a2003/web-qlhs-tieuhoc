@@ -8,10 +8,10 @@ use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Chitietdiem $Model */
-/** @var app\models\searchs\ViewChitietHsTiengvietSearch $searchModel */
+/** @var app\models\searchs\ViewChitietHsTienganhSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Chi tiết điểm Tiếng việt';
+$this->title = 'Chi tiết điểm Tiếng anh';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="chitietdiem-index">
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Thêm điểm Tiếng việt', ['create'], ['class' => 'btn btn-success']) ?>
+        <!-- <?= Html::a('Thêm điểm anh', ['create'], ['class' => 'btn btn-success']) ?> -->
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -42,12 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'diem_giua_ki2',
             'diem_ki2',
             'TB',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id_chitietdiem' => $model->id_chitietdiem]);
-                 },'contentOptions' => ['style'=> 'width:6%']
-            ],
+            // [
+            //     'class' => ActionColumn::className(),
+            //     'urlCreator' => function ($action, $Model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'id_chitietdiem' => $Model->id_chitietdiem]);
+            //      },'contentOptions' => ['style'=> 'width:6%']
+            // ],
         ],
     ]); ?>
 

@@ -34,7 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'tenhs',
             // 'gioitinh',
-            'ngaysinh',
+            [
+                'attribute' => 'ngaysinh',
+                'format' => ['date', 'php:d/m/Y']
+            ],
             'diem_giua_ki1',
             'diem_ki1',
             'diem_giua_ki2',

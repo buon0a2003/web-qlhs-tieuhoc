@@ -13,6 +13,8 @@ use app\models\searchs\ViewChitietHsToanSearch;
 use app\models\Hocsinh;
 use app\models\searchs\HocsinhSearch;
 use app\models\searchs\MonhocSearch;
+use app\models\User;
+use yii;
 
 /**
  * ChitietdiemController implements the CRUD actions for Chitietdiem model.
@@ -47,30 +49,53 @@ class ChitietdiemController extends Controller
         $searchModel = new ViewChitietHsTienganhSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('@app/views/chitietdiem/index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
+            return $this->render('@app/views/phuhuynh/chitietdiem/index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->render('@app/views/chitietdiem/index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
+
+    
 
     public function actionIndexTiengviet(){
         $searchModel = new ViewChitietHsTiengvietSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('@app/views/chitietdiem/indexTiengviet', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
+            return $this->render('@app/views/phuhuynh/chitietdiem/indexTiengviet', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->render('@app/views/chitietdiem/indexTiengviet', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     public function actionIndexToan(){
         $searchModel = new ViewChitietHsToanSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('@app/views/chitietdiem/indexToan', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
+            return $this->render('@app/views/phuhuynh/chitietdiem/indexToan', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->render('@app/views/chitietdiem/indexToan', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     /**

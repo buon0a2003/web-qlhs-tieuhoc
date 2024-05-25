@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use app\models\User;
 
 AppAsset::register($this);
 
@@ -25,6 +26,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <!-- on your view layout file HEAD section -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -46,39 +49,114 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         ],
     ];
 
+    if (Yii::$app->user->isGuest){
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
+            'items' => [
+                ['label' => 'Login', 'url' => ['/site/login']]
+            ]
+        ]);
+    } else if (User::findIdentity(Yii::$app->user->id)->role_id == 1){
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
+                'items' => [
+                    ['label' => 'Trang chủ', 'url' => ['/site/index']],
+                    ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
+                    [
+                        'label'=> 'Điểm',
+                        'items'=>[
+                            ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                            
+                            ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                            
+                            ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
 
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
-            [
-                'label'=> 'Điểm',
-                'items'=>[
-                    ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
-                    
-                    ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
-                    
-                    ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
+                            ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
+                        ],
+                        'contenOptions' => ['class'=>'bg-dark'],
+                    ],
+                    ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
+                    ['label' => 'Lớp', 'url' => ['/lop/index']],
+                    Yii::$app->user->isGuest
+                        ? ['label' => 'Login', 'url' => ['/site/login']]
+                        : '<li class="nav-item">'
+                            . Html::beginForm(['/site/logout'])
+                            . Html::submitButton(
+                                'Logout (' . Yii::$app->user->identity->username . ')',
+                                ['class' => 'nav-link btn btn-link logout']
+                            )
+                            . Html::endForm()
+                            . '</li>'           
+                ]
+            ]);
+        } else if (User::findIdentity(Yii::$app->user->id)->role_id == 2){
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
+                'items' => [
+                    ['label' => 'Trang chủ', 'url' => ['/site/index']],
+                    ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
+                    [
+                        'label'=> 'Điểm',
+                        'items'=>[
+                            ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                            
+                            ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                            
+                            ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
 
-                    ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
-                ],
-                'contenOptions' => ['class'=>'bg-dark'],
-            ],
-            ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
-            ['label' => 'Lớp', 'url' => ['/lop/index']],
-            Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'           
-        ]
-    ]);
+                            ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
+                        ],
+                        'contenOptions' => ['class'=>'bg-dark'],
+                    ],
+                    // ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
+                    // ['label' => 'Lớp', 'url' => ['/lop/index']],
+                    Yii::$app->user->isGuest
+                        ? ['label' => 'Login', 'url' => ['/site/login']]
+                        : '<li class="nav-item">'
+                            . Html::beginForm(['/site/logout'])
+                            . Html::submitButton(
+                                'Logout (' . Yii::$app->user->identity->username . ')',
+                                ['class' => 'nav-link btn btn-link logout']
+                            )
+                            . Html::endForm()
+                            . '</li>'           
+                ]
+            ]);
+        } else if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
+                'items' => [
+                    ['label' => 'Trang chủ', 'url' => ['/site/index']],
+                    ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
+                    [
+                        'label'=> 'Điểm',
+                        'items'=>[
+                            ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                            
+                            ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                            
+                            ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
+
+                            ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
+                        ],
+                        'contenOptions' => ['class'=>'bg-dark'],
+                    ],
+                    // ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
+                    // ['label' => 'Lớp', 'url' => ['/lop/index']],
+                    Yii::$app->user->isGuest
+                        ? ['label' => 'Login', 'url' => ['/site/login']]
+                        : '<li class="nav-item">'
+                            . Html::beginForm(['/site/logout'])
+                            . Html::submitButton(
+                                'Logout (' . Yii::$app->user->identity->username . ')',
+                                ['class' => 'nav-link btn btn-link logout']
+                            )
+                            . Html::endForm()
+                            . '</li>'           
+                ]
+            ]);
+        }
+        
     NavBar::end();
     ?>
 </header>
@@ -96,8 +174,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <footer id="footer" class="mt-auto py-3 bg-light">
     <div class="container">
         <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; dcm cuoc doi <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end">kiu tao</div>
+            <div class="col-md-6 text-center text-md-start">&copy; Hệ thống quản lí học sinh siêu đỉnh <?= date('Y') ?></div>
+            <div class="col-md-6 text-center text-md-end">HT nhúng siêu mệt</div>
         </div>
     </div>
 </footer>
