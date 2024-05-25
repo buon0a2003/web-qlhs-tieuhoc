@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 19, 2024 at 04:58 PM
+-- Generation Time: May 25, 2024 at 06:48 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -47,11 +47,17 @@ INSERT INTO `chitietdiem` (`id_chitietdiem`, `mamon`, `mahocsinh`, `diem_giua_ki
 (2, 2, 1, 6, 6, 5, 5, NULL),
 (4, 1, 2, 5, 5, 3, 3, NULL),
 (5, 2, 2, 9, 9, 10, 10, NULL),
-(6, 3, 2, 8, 8, 8, 8, NULL),
 (7, 1, 3, 6, 7, 8, 9, NULL),
 (8, 2, 3, 7, 8, 9, 6, NULL),
 (9, 3, 3, 8, 9, 10, 7, NULL),
-(12, 3, 1, 8, 8, 6, 6, 'aaa');
+(12, 3, 1, 8, 8, 6, 6, 'aaa'),
+(13, 3, 444, 2, 2, 3, 3, ''),
+(14, 2, 444, 3, 3, 3, 3, ''),
+(15, 1, 444, 2, 2, 2, 2, ''),
+(16, 1, 555, 9, 9, 9, 9, ''),
+(17, 2, 555, 9, 9, 9, 9, ''),
+(18, 3, 555, 9, 9, 9, 9, ''),
+(21, 3, 2, 9, 9, 9, 9, '');
 
 -- --------------------------------------------------------
 
@@ -91,7 +97,7 @@ CREATE TABLE `hocsinh` (
   `sdtbome` varchar(50) NOT NULL,
   `diachi` varchar(50) NOT NULL,
   `malop` int(11) NOT NULL,
-  `ghichu` varchar(50) DEFAULT 'NULL'
+  `ghichu` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -101,7 +107,10 @@ CREATE TABLE `hocsinh` (
 INSERT INTO `hocsinh` (`hsid`, `tenhs`, `gioitinh`, `ngaysinh`, `sdtbome`, `diachi`, `malop`, `ghichu`) VALUES
 (1, 'xơn', 'male', '2018-01-02', '424749237', 'hải phòng', 1, 'ngu'),
 (2, 'kiên', 'female', '2018-10-09', '235437456', 'địa ngục', 2, 'thông minh'),
-(3, 'dũng', 'male', '2018-04-07', '556256356', 'hà nội', 3, 'không có');
+(3, 'dũng', 'male', '2018-04-07', '556256356', 'hà nội', 3, 'không có'),
+(444, 'Nam', 'male', '2018-03-04', '4839753957', 'Hải phòng', 1, 'NULL'),
+(555, 'Hoàng', 'female', '2018-02-19', '5496749056', 'Huế', 2, 'Không có'),
+(666, 'Phúc', 'male', '2018-07-19', '234262525', 'tp HCM', 3, 'Không có');
 
 -- --------------------------------------------------------
 
@@ -161,7 +170,20 @@ CREATE TABLE `role` (
 
 INSERT INTO `role` (`role_id`, `tenrole`, `capdo`) VALUES
 (1, 'giám hiệu', 0),
-(2, 'giáo viên', 1);
+(2, 'giáo viên', 1),
+(3, 'phụ huynh', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `thongke`
+-- (See below for the actual view)
+--
+CREATE TABLE `thongke` (
+`xepLoai` varchar(10)
+,`soluong` bigint(21)
+,`tile` decimal(24,0)
+);
 
 -- --------------------------------------------------------
 
@@ -181,8 +203,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `role_id`) VALUES
-(111, 'admin', '827ccb0eea8a706c4c34a16891f84e7b', 1),
-(222, 'giaovien', '01cfcd4f6b8770febfb40cb906715822', 2);
+(111, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 1),
+(222, 'giaovien', 'd93591bdf7860e1e4ee2fca799911215', 2),
+(333, 'phuhuynh', '674f3c2c1a8a6f90461e8a66fb5550ba', 3);
 
 -- --------------------------------------------------------
 
@@ -200,7 +223,7 @@ CREATE TABLE `view_chitiet_hs_tienganh` (
 ,`diem_ki1` int(11)
 ,`diem_giua_ki2` int(11)
 ,`diem_ki2` int(11)
-,`TB` decimal(17,4)
+,`TB` decimal(16,2)
 ,`ghichu` varchar(50)
 );
 
@@ -220,7 +243,7 @@ CREATE TABLE `view_chitiet_hs_tiengviet` (
 ,`diem_ki1` int(11)
 ,`diem_giua_ki2` int(11)
 ,`diem_ki2` int(11)
-,`TB` decimal(17,4)
+,`TB` decimal(16,2)
 ,`ghichu` varchar(50)
 );
 
@@ -240,7 +263,7 @@ CREATE TABLE `view_chitiet_hs_toan` (
 ,`diem_ki1` int(11)
 ,`diem_giua_ki2` int(11)
 ,`diem_ki2` int(11)
-,`TB` decimal(17,4)
+,`TB` decimal(16,2)
 ,`ghichu` varchar(50)
 );
 
@@ -266,9 +289,11 @@ CREATE TABLE `view_hs_diem_tb` (
 CREATE TABLE `view_hs_tongket_tb` (
 `hsid` int(11)
 ,`tenhs` varchar(50)
-,`tienganhTB` decimal(17,4)
-,`tiengvietTB` decimal(17,4)
-,`toanTB` decimal(17,4)
+,`tienganhTB` decimal(16,2)
+,`tiengvietTB` decimal(16,2)
+,`toanTB` decimal(16,2)
+,`Tongket` decimal(19,2)
+,`xepLoai` varchar(10)
 );
 
 -- --------------------------------------------------------
@@ -291,11 +316,20 @@ CREATE TABLE `view_thong_tin_hs` (
 -- --------------------------------------------------------
 
 --
+-- Structure for view `thongke`
+--
+DROP TABLE IF EXISTS `thongke`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `thongke`  AS SELECT `view_hs_tongket_tb`.`xepLoai` AS `xepLoai`, count(0) AS `soluong`, round(count(0) / (select count(0) from `view_hs_tongket_tb`) * 100,0) AS `tile` FROM `view_hs_tongket_tb` GROUP BY `view_hs_tongket_tb`.`xepLoai` ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `view_chitiet_hs_tienganh`
 --
 DROP TABLE IF EXISTS `view_chitiet_hs_tienganh`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_chitiet_hs_tienganh`  AS SELECT `chitietdiem`.`id_chitietdiem` AS `id_chitietdiem`, `hocsinh`.`hsid` AS `hsid`, `hocsinh`.`tenhs` AS `tenhs`, `hocsinh`.`gioitinh` AS `gioitinh`, `hocsinh`.`ngaysinh` AS `ngaysinh`, `chitietdiem`.`diem_giua_ki1` AS `diem_giua_ki1`, `chitietdiem`.`diem_ki1` AS `diem_ki1`, `chitietdiem`.`diem_giua_ki2` AS `diem_giua_ki2`, `chitietdiem`.`diem_ki2` AS `diem_ki2`, (`chitietdiem`.`diem_giua_ki1` + `chitietdiem`.`diem_giua_ki2` + `chitietdiem`.`diem_ki1` + `chitietdiem`.`diem_ki2`) / 4 AS `TB`, `hocsinh`.`ghichu` AS `ghichu` FROM (`chitietdiem` join `hocsinh` on(`chitietdiem`.`mahocsinh` = `hocsinh`.`hsid`)) WHERE `chitietdiem`.`mamon` = 3 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_chitiet_hs_tienganh`  AS SELECT `chitietdiem`.`id_chitietdiem` AS `id_chitietdiem`, `hocsinh`.`hsid` AS `hsid`, `hocsinh`.`tenhs` AS `tenhs`, `hocsinh`.`gioitinh` AS `gioitinh`, `hocsinh`.`ngaysinh` AS `ngaysinh`, `chitietdiem`.`diem_giua_ki1` AS `diem_giua_ki1`, `chitietdiem`.`diem_ki1` AS `diem_ki1`, `chitietdiem`.`diem_giua_ki2` AS `diem_giua_ki2`, `chitietdiem`.`diem_ki2` AS `diem_ki2`, round((`chitietdiem`.`diem_giua_ki1` + `chitietdiem`.`diem_giua_ki2` + `chitietdiem`.`diem_ki1` + `chitietdiem`.`diem_ki2`) / 4,2) AS `TB`, `hocsinh`.`ghichu` AS `ghichu` FROM (`chitietdiem` join `hocsinh` on(`chitietdiem`.`mahocsinh` = `hocsinh`.`hsid`)) WHERE `chitietdiem`.`mamon` = 3 ;
 
 -- --------------------------------------------------------
 
@@ -304,7 +338,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `view_chitiet_hs_tiengviet`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_chitiet_hs_tiengviet`  AS SELECT `chitietdiem`.`id_chitietdiem` AS `id_chitietdiem`, `hocsinh`.`hsid` AS `hsid`, `hocsinh`.`tenhs` AS `tenhs`, `hocsinh`.`gioitinh` AS `gioitinh`, `hocsinh`.`ngaysinh` AS `ngaysinh`, `chitietdiem`.`diem_giua_ki1` AS `diem_giua_ki1`, `chitietdiem`.`diem_ki1` AS `diem_ki1`, `chitietdiem`.`diem_giua_ki2` AS `diem_giua_ki2`, `chitietdiem`.`diem_ki2` AS `diem_ki2`, (`chitietdiem`.`diem_giua_ki1` + `chitietdiem`.`diem_giua_ki2` + `chitietdiem`.`diem_ki1` + `chitietdiem`.`diem_ki2`) / 4 AS `TB`, `hocsinh`.`ghichu` AS `ghichu` FROM (`chitietdiem` join `hocsinh` on(`chitietdiem`.`mahocsinh` = `hocsinh`.`hsid`)) WHERE `chitietdiem`.`mamon` = 2 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_chitiet_hs_tiengviet`  AS SELECT `chitietdiem`.`id_chitietdiem` AS `id_chitietdiem`, `hocsinh`.`hsid` AS `hsid`, `hocsinh`.`tenhs` AS `tenhs`, `hocsinh`.`gioitinh` AS `gioitinh`, `hocsinh`.`ngaysinh` AS `ngaysinh`, `chitietdiem`.`diem_giua_ki1` AS `diem_giua_ki1`, `chitietdiem`.`diem_ki1` AS `diem_ki1`, `chitietdiem`.`diem_giua_ki2` AS `diem_giua_ki2`, `chitietdiem`.`diem_ki2` AS `diem_ki2`, round((`chitietdiem`.`diem_giua_ki1` + `chitietdiem`.`diem_giua_ki2` + `chitietdiem`.`diem_ki1` + `chitietdiem`.`diem_ki2`) / 4,2) AS `TB`, `hocsinh`.`ghichu` AS `ghichu` FROM (`chitietdiem` join `hocsinh` on(`chitietdiem`.`mahocsinh` = `hocsinh`.`hsid`)) WHERE `chitietdiem`.`mamon` = 2 ;
 
 -- --------------------------------------------------------
 
@@ -313,7 +347,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `view_chitiet_hs_toan`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_chitiet_hs_toan`  AS SELECT `chitietdiem`.`id_chitietdiem` AS `id_chitietdiem`, `hocsinh`.`hsid` AS `hsid`, `hocsinh`.`tenhs` AS `tenhs`, `hocsinh`.`gioitinh` AS `gioitinh`, `hocsinh`.`ngaysinh` AS `ngaysinh`, `chitietdiem`.`diem_giua_ki1` AS `diem_giua_ki1`, `chitietdiem`.`diem_ki1` AS `diem_ki1`, `chitietdiem`.`diem_giua_ki2` AS `diem_giua_ki2`, `chitietdiem`.`diem_ki2` AS `diem_ki2`, (`chitietdiem`.`diem_giua_ki1` + `chitietdiem`.`diem_giua_ki2` + `chitietdiem`.`diem_ki1` + `chitietdiem`.`diem_ki2`) / 4 AS `TB`, `hocsinh`.`ghichu` AS `ghichu` FROM (`chitietdiem` join `hocsinh` on(`chitietdiem`.`mahocsinh` = `hocsinh`.`hsid`)) WHERE `chitietdiem`.`mamon` = 1 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_chitiet_hs_toan`  AS SELECT `chitietdiem`.`id_chitietdiem` AS `id_chitietdiem`, `hocsinh`.`hsid` AS `hsid`, `hocsinh`.`tenhs` AS `tenhs`, `hocsinh`.`gioitinh` AS `gioitinh`, `hocsinh`.`ngaysinh` AS `ngaysinh`, `chitietdiem`.`diem_giua_ki1` AS `diem_giua_ki1`, `chitietdiem`.`diem_ki1` AS `diem_ki1`, `chitietdiem`.`diem_giua_ki2` AS `diem_giua_ki2`, `chitietdiem`.`diem_ki2` AS `diem_ki2`, round((`chitietdiem`.`diem_giua_ki1` + `chitietdiem`.`diem_giua_ki2` + `chitietdiem`.`diem_ki1` + `chitietdiem`.`diem_ki2`) / 4,2) AS `TB`, `hocsinh`.`ghichu` AS `ghichu` FROM (`chitietdiem` join `hocsinh` on(`chitietdiem`.`mahocsinh` = `hocsinh`.`hsid`)) WHERE `chitietdiem`.`mamon` = 1 ;
 
 -- --------------------------------------------------------
 
@@ -331,7 +365,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `view_hs_tongket_tb`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_hs_tongket_tb`  AS SELECT `view_chitiet_hs_tienganh`.`hsid` AS `hsid`, `view_chitiet_hs_tienganh`.`tenhs` AS `tenhs`, `view_chitiet_hs_tienganh`.`TB` AS `tienganhTB`, `view_chitiet_hs_tiengviet`.`TB` AS `tiengvietTB`, `view_chitiet_hs_toan`.`TB` AS `toanTB` FROM ((`view_chitiet_hs_tienganh` join `view_chitiet_hs_tiengviet` on(`view_chitiet_hs_tienganh`.`hsid` = `view_chitiet_hs_tiengviet`.`hsid`)) join `view_chitiet_hs_toan` on(`view_chitiet_hs_tienganh`.`hsid` = `view_chitiet_hs_toan`.`hsid`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_hs_tongket_tb`  AS SELECT `view_chitiet_hs_tienganh`.`hsid` AS `hsid`, `view_chitiet_hs_tienganh`.`tenhs` AS `tenhs`, round(`view_chitiet_hs_tienganh`.`TB`,2) AS `tienganhTB`, round(`view_chitiet_hs_tiengviet`.`TB`,2) AS `tiengvietTB`, round(`view_chitiet_hs_toan`.`TB`,2) AS `toanTB`, round((`view_chitiet_hs_tienganh`.`TB` + `view_chitiet_hs_tiengviet`.`TB` + `view_chitiet_hs_toan`.`TB`) / 3,2) AS `Tongket`, if(round((`view_chitiet_hs_tienganh`.`TB` + `view_chitiet_hs_tiengviet`.`TB` + `view_chitiet_hs_toan`.`TB`) / 3,2) < 5,'Yếu',if(round((`view_chitiet_hs_tienganh`.`TB` + `view_chitiet_hs_tiengviet`.`TB` + `view_chitiet_hs_toan`.`TB`) / 3,2) < 6.5,'Trung binh',if(round((`view_chitiet_hs_tienganh`.`TB` + `view_chitiet_hs_tiengviet`.`TB` + `view_chitiet_hs_toan`.`TB`) / 3,2) < 8,'Khá','Giỏi'))) AS `xepLoai` FROM ((`view_chitiet_hs_tienganh` join `view_chitiet_hs_tiengviet` on(`view_chitiet_hs_tienganh`.`hsid` = `view_chitiet_hs_tiengviet`.`hsid`)) join `view_chitiet_hs_toan` on(`view_chitiet_hs_tienganh`.`hsid` = `view_chitiet_hs_toan`.`hsid`)) ;
 
 -- --------------------------------------------------------
 
@@ -401,7 +435,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `chitietdiem`
 --
 ALTER TABLE `chitietdiem`
-  MODIFY `id_chitietdiem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_chitietdiem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `giaovien`
@@ -419,7 +453,7 @@ ALTER TABLE `lop`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
