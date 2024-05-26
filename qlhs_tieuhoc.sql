@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2024 at 06:48 PM
+-- Generation Time: May 26, 2024 at 12:44 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -203,8 +203,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `role_id`) VALUES
-(111, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', 1),
-(222, 'giaovien', 'd93591bdf7860e1e4ee2fca799911215', 2),
+(88, 'test', '9fbfb220e03aa76d424088e43314b0d0', 1),
+(111, 'admin', '699a474e923b8da5d7aefbfc54a8a2bd', 1),
+(222, 'giaovien', '5fa72358f0b4fb4f2c5d7de8c9a41846', 2),
 (333, 'phuhuynh', '674f3c2c1a8a6f90461e8a66fb5550ba', 3);
 
 -- --------------------------------------------------------
@@ -447,7 +448,7 @@ ALTER TABLE `giaovien`
 -- AUTO_INCREMENT for table `lop`
 --
 ALTER TABLE `lop`
-  MODIFY `lopid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `lopid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `role`
