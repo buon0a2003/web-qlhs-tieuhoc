@@ -5,5 +5,6 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'bsVersion' => '5.x',
-    'bsDependencyEnabled' => false,
+    // 'bsDependencyEnabled' => false,
+    'icon-framework' => 'fas'
 ];

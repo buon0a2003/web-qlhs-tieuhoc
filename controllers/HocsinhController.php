@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Chitietdiem;
 use app\models\hocsinh;
 use app\models\Giaovien;
 use app\models\searchs\HocsinhSearch;
@@ -9,6 +10,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Lop;
+use app\models\User;
+use Yii;
 
 /**
  * HocsinhController implements the CRUD actions for hocsinh model.
@@ -43,10 +46,21 @@ class HocsinhController extends Controller
         $searchModel = new HocsinhSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
+            return $this->render('@app/views/phuhuynh/hocsinh/index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 
     /**
@@ -118,7 +132,12 @@ class HocsinhController extends Controller
      */
     public function actionDelete($hsid)
     {
-        $this->findModel($hsid)->delete();
+        $student = $this->findModel($hsid);
+
+        if ($student !== null) {
+            Chitietdiem::deleteAll(['mahocsinh' => $student->hsid]);
+            $student->delete();
+        }
 
         return $this->redirect(['index']);
     }

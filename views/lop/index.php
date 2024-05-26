@@ -5,6 +5,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use app\models\Hocsinh;
+use kartik\export\ExportMenu;
 
 /** @var yii\web\View $this */
 /** @var app\models\searchs\LopSearch $searchModel */
@@ -18,11 +20,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Thêm lớp', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Thêm lớp <i class="fas fa-plus"></i>', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?=
+        ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'lopid',
+                'ten_lop'
+            ],
+            'dropdownOptions' => [
+                'label' => 'Export All',
+                'class' => 'btn btn-outline-secondary btn-default'
+            ]
+        ]);
+    ?>
+    <div><br></div>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -32,6 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'lopid',
             'ten_lop',
+            [
+                'label' => 'Số lượng HS',
+                'headerOptions' => ['class' => 'text-success'],
+                'value' => function($model){
+                    return Hocsinh::find()->where(['malop' => $model->lopid])->count();
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Lop $model, $key, $index, $column) {

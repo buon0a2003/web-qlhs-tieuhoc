@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\models\Lop;
 
 /** @var yii\web\View $this */
 /** @var app\models\hocsinh $model */
@@ -33,21 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'hsid',
             'tenhs',
             'gioitinh',
-            [
-                'attribute' => 'ngaysinh',
-                'format' => ['date', 'php:d/m/Y']
-            ],
+            'ngaysinh',
             'sdtbome',
             'diachi',
-            [
-                'label' => 'Tên lớp',
-                'attribute' => 'malop',
-                'value' => function($model){
-                    $lop = Lop::findOne(['lopid'=>$model->malop]);
-                    return $lop->ten_lop;
-                }
-
-            ],
+            'malop',
             'ghichu',
         ],
     ]) ?>

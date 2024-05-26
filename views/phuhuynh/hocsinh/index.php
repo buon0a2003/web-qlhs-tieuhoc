@@ -7,7 +7,6 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use app\models\Lop;
-use kartik\export\ExportMenu;
 
 /** @var yii\web\View $this */
 /** @var app\models\searchs\HocsinhSearch $searchModel */
@@ -21,51 +20,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Thêm học sinh <i class="fas fa-plus"></i>', ['create'], ['class' => 'btn btn-success']) ?>
+        <!-- <?= Html::a('Thêm học sinh', ['create'], ['class' => 'btn btn-success']) ?> -->
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
     ?>
-
-    <?=
-        ExportMenu::widget([
-            'dataProvider' => $dataProvider,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'hsid',
-                'tenhs',
-                [
-                    'attribute' => 'gioitinh', 
-                    'value' => function($dataProvider){
-                        if ($dataProvider->gioitinh == 'male')
-                            return 'Nam';
-                        else
-                            return 'Nữ';
-                    }
-                ],
-                [
-                    'attribute' => 'ngaysinh',
-                    'format' => ['date', 'php:d/m/Y']
-                ],
-                'sdtbome',
-                'diachi',
-                [
-                    'attribute' => 'malop',
-                    'value' => function($model){
-                        $lop = Lop::findOne(['lopid'=>$model->malop]);
-                        return $lop->ten_lop;
-                    }
-    
-                ],
-                'ghichu',
-            ],
-            'dropdownOptions' => [
-                'label' => 'Export All',
-                'class' => 'btn btn-outline-secondary btn-default'
-            ]
-        ]);
-    ?>
-    <div><br></div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -108,12 +67,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ],
             'ghichu',
-            [
-                'class' => ActionColumn::class,
-                'urlCreator' => function ($action, hocsinh $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'hsid' => $model->hsid]);
-                 },'contentOptions' => ['style'=> 'width:6%']
-            ],
+            // [
+            //     'class' => ActionColumn::class,
+            //     'urlCreator' => function ($action, hocsinh $model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'hsid' => $model->hsid]);
+            //      },'contentOptions' => ['style'=> 'width:6%']
+            // ],
 
         ],
     ]); ?>

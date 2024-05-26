@@ -1,13 +1,14 @@
 <?php
 
+use app\models\Monhoc;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Giaovien $model */
 
-$this->title = $model->gvid;
-$this->params['breadcrumbs'][] = ['label' => 'Giaoviens', 'url' => ['index']];
+$this->title = $model->hotengv;
+$this->params['breadcrumbs'][] = ['label' => 'Giáo viên', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -31,10 +32,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'gvid',
             'hotengv',
-            'ngay_sinh',
+            [
+                'attribute' => 'ngay_sinh',
+                'format' => ['date', 'php:d/m/Y'],
+            ],
             'diachi',
             'sdt',
-            'mamon',
+            [
+                'label' => 'Môn dạy',
+                'attribute' => 'mamon',
+                'value' => function($model){
+                    $mon = Monhoc::findOne(['idmonhoc'=>$model->mamon]);
+                    return $mon->tenmon;
+                }
+
+            ],
         ],
     ]) ?>
 

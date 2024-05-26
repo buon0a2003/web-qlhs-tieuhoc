@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use kartik\icons\Icon;
 
 /** @var yii\web\View $this */
 /** @var app\models\Chitietdiem $model */
