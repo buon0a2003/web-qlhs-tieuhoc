@@ -10,6 +10,7 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 use app\models\User;
+use kartik\icons\Icon;
 
 AppAsset::register($this);
 
@@ -26,8 +27,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <!-- on your view layout file HEAD section -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -40,14 +40,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
 
-    $menuItems = [
-        'label' => 'Cá nhân',
-        'items' => [
-            ['label' => 'Thông tin cá nhân', 'url' => ['/giao-vien/update-ca-nhan']],
-            ['label' => 'Đổi mật khẩu', 'url' => ['/giao-vien/update-mat-khau']],
-            ['label' => 'Đăng xuất', 'url' => ['/site/logout'],  'linkOptions' => ['data-method' => 'post'],],
-        ],
-    ];
+    // $menuItems = 
 
     if (Yii::$app->user->isGuest){
         echo Nav::widget([
@@ -59,100 +52,93 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     } else if (User::findIdentity(Yii::$app->user->id)->role_id == 1){
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
+                'encodeLabels' => false,
                 'items' => [
-                    ['label' => 'Trang chủ', 'url' => ['/site/index']],
-                    ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
+                    ['label' => Icon::show('home') . 'Trang chủ', 'url' => ['/site/index']],
+                    ['label' => Icon::show('accessible-icon', ['framework' => Icon::FAB]) . 'Học sinh', 'url' => ['/hocsinh/index']],
                     [
-                        'label'=> 'Điểm',
+                        'label'=> Icon::show('tasks', ['framework' => Icon::FAS]) .'Điểm',
                         'items'=>[
-                            ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                            ['label' => Icon::show('hand-point-right', ['framework' => Icon::FAS]) .   'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
                             
-                            ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                            ['label' =>  Icon::show('hand-point-right', ['framework' => Icon::FAS]) .  'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
                             
-                            ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
+                            ['label' =>  Icon::show('hand-point-right', ['framework' => Icon::FAS]) .   'Điểm anh', 'url' => ['/chitietdiem/index']],
 
-                            ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
+                            ['label' => Icon::show('chart-pie', ['framework' => Icon::FAS]) .  'Điểm Tổng kết', 'url' => ['/tongket/index']]
                         ],
                         'contenOptions' => ['class'=>'bg-dark'],
                     ],
-                    ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
-                    ['label' => 'Lớp', 'url' => ['/lop/index']],
-                    Yii::$app->user->isGuest
-                        ? ['label' => 'Login', 'url' => ['/site/login']]
-                        : '<li class="nav-item">'
-                            . Html::beginForm(['/site/logout'])
-                            . Html::submitButton(
-                                'Logout (' . Yii::$app->user->identity->username . ')',
-                                ['class' => 'nav-link btn btn-link logout']
-                            )
-                            . Html::endForm()
-                            . '</li>'           
+                    ['label' =>Icon::show('user-tie', ['framework' => Icon::FAS]) . 'Giáo viên', 'url' => ['/giaovien/index']],
+                    ['label' =>Icon::show('school', ['framework' => Icon::FAS]) .  'Lớp', 'url' => ['/lop/index']],
+                    ['label' =>Icon::show('user-circle', ['framework' => Icon::FAS]) .  'Tài khoản', 'url' => ['/user/index']],
+                    [
+                        'label' => Icon::show('user', ['class'=>'fa-1x']) . Yii::$app->user->identity->username,
+                        'items' => [
+                            ['label' =>  Icon::show('key', ['framework' => Icon::FAS]) .   'Đổi mật khẩu', 'url' => ['/giaovien/update-mat-khau']],
+                            ['label' => Icon::show('sign-out-alt', ['framework' => Icon::FAS]) . 'Đăng xuất', 'url' => ['/site/logout'],  'linkOptions' => ['data-method' => 'post'],],
+                        ],
+                    ]
                 ]
             ]);
         } else if (User::findIdentity(Yii::$app->user->id)->role_id == 2){
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
+                'encodeLabels' => false,
                 'items' => [
-                    ['label' => 'Trang chủ', 'url' => ['/site/index']],
-                    ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
+                    ['label' => Icon::show('home') . 'Trang chủ', 'url' => ['/site/index']],
+                    ['label' => Icon::show('accessible-icon', ['framework' => Icon::FAB]) . 'Học sinh', 'url' => ['/hocsinh/index']],
                     [
-                        'label'=> 'Điểm',
+                        'label'=> Icon::show('tasks', ['framework' => Icon::FAS]) .'Điểm',
                         'items'=>[
-                            ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                            ['label' => Icon::show('hand-point-right', ['framework' => Icon::FAS]) .   'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
                             
-                            ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                            ['label' =>  Icon::show('hand-point-right', ['framework' => Icon::FAS]) .  'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
                             
-                            ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
+                            ['label' =>  Icon::show('hand-point-right', ['framework' => Icon::FAS]) .   'Điểm anh', 'url' => ['/chitietdiem/index']],
 
-                            ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
+                            ['label' => Icon::show('chart-pie', ['framework' => Icon::FAS]) .  'Điểm Tổng kết', 'url' => ['/tongket/index']]
                         ],
                         'contenOptions' => ['class'=>'bg-dark'],
                     ],
-                    // ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
-                    // ['label' => 'Lớp', 'url' => ['/lop/index']],
-                    Yii::$app->user->isGuest
-                        ? ['label' => 'Login', 'url' => ['/site/login']]
-                        : '<li class="nav-item">'
-                            . Html::beginForm(['/site/logout'])
-                            . Html::submitButton(
-                                'Logout (' . Yii::$app->user->identity->username . ')',
-                                ['class' => 'nav-link btn btn-link logout']
-                            )
-                            . Html::endForm()
-                            . '</li>'           
+                    [
+                        'label' => Icon::show('user', ['class'=>'fa-1x']) . Yii::$app->user->identity->username,
+                        'items' => [
+                            ['label' =>  Icon::show('key', ['framework' => Icon::FAS]) .   'Đổi mật khẩu', 'url' => ['/giaovien/update-mat-khau']],
+                            ['label' => Icon::show('sign-out-alt', ['framework' => Icon::FAS]) . 'Đăng xuất', 'url' => ['/site/logout'],  'linkOptions' => ['data-method' => 'post'],],
+                        ],
+                    ]        
                 ]
             ]);
         } else if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
             echo Nav::widget([
+                'encodeLabels' => false,
                 'options' => ['class' => 'navbar-nav navbar-right ms-auto'],
                 'items' => [
-                    ['label' => 'Trang chủ', 'url' => ['/site/index']],
-                    ['label' => 'Học sinh', 'url' => ['/hocsinh/index']],
+                    ['label' => Icon::show('home') . 'Trang chủ', 'url' => ['/site/index']],
+                    ['label' => Icon::show('accessible-icon', ['framework' => Icon::FAB]) . 'Học sinh', 'url' => ['/hocsinh/index']],
                     [
-                        'label'=> 'Điểm',
+                        'label'=> Icon::show('tasks', ['framework' => Icon::FAS]) .'Điểm',
                         'items'=>[
-                            ['label' => 'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
+                            ['label' => Icon::show('hand-point-right', ['framework' => Icon::FAS]) .   'Điểm Toán', 'url' => ['/chitietdiem/index-toan']],
                             
-                            ['label' => 'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
+                            ['label' =>  Icon::show('hand-point-right', ['framework' => Icon::FAS]) .  'Điểm Tiếng việt', 'url' => ['/chitietdiem/index-tiengviet']],
                             
-                            ['label' => 'Điểm anh', 'url' => ['/chitietdiem/index']],
+                            ['label' =>  Icon::show('hand-point-right', ['framework' => Icon::FAS]) .   'Điểm anh', 'url' => ['/chitietdiem/index']],
 
-                            ['label' => 'Điểm Tổng kết', 'url' => ['/tongket/index']]
+                            ['label' => Icon::show('chart-pie', ['framework' => Icon::FAS]) .  'Điểm Tổng kết', 'url' => ['/tongket/index']]
                         ],
                         'contenOptions' => ['class'=>'bg-dark'],
                     ],
                     // ['label' => 'Giáo viên', 'url' => ['/giaovien/index']],
                     // ['label' => 'Lớp', 'url' => ['/lop/index']],
-                    Yii::$app->user->isGuest
-                        ? ['label' => 'Login', 'url' => ['/site/login']]
-                        : '<li class="nav-item">'
-                            . Html::beginForm(['/site/logout'])
-                            . Html::submitButton(
-                                'Logout (' . Yii::$app->user->identity->username . ')',
-                                ['class' => 'nav-link btn btn-link logout']
-                            )
-                            . Html::endForm()
-                            . '</li>'           
+                    [
+                        'label' => Icon::show('user', ['class'=>'fa-1x']) . Yii::$app->user->identity->username,
+                        'items' => [
+                            ['label' =>  Icon::show('key', ['framework' => Icon::FAS]) .   'Đổi mật khẩu', 'url' => ['/giaovien/update-mat-khau']],
+                            ['label' => Icon::show('sign-out-alt', ['framework' => Icon::FAS]) . 'Đăng xuất', 'url' => ['/site/logout'],  'linkOptions' => ['data-method' => 'post'],],
+                        ],
+                    ]        
                 ]
             ]);
         }

@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
 
 /** @var yii\web\View $this */
 /** @var app\models\Chitietdiem $Model */
@@ -19,11 +20,34 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Thêm điểm anh', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Thêm điểm anh <i class="fas fa-plus"></i>' , ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?=
+        ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                ['attribute' => 'hsid'],
+                'tenhs',
+                [
+                    'attribute' => 'ngaysinh',
+                    'format' => ['date', 'php:d/m/Y']
+                ],
+                'diem_giua_ki1',
+                'diem_ki1',
+                'diem_giua_ki2',
+                'diem_ki2',
+                'TB',
+            ],
+            'dropdownOptions' => [
+                'label' => 'Export All',
+                'class' => 'btn btn-outline-secondary btn-default'
+            ]
+        ]);
+    ?>
+    <div><br></div>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

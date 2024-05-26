@@ -49,10 +49,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'user_id' => 'User ID',
+            'user_id' => 'ID người dùng',
             'username' => 'Tên tài khoản',
             'password' => 'Mật khẩu',
-            'role_id' => 'Role ID',
+            'role_id' => 'Tên role',
         ];
     }
 
@@ -89,6 +89,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return static::findOne(['username' => $username]);
     }
 
+    public static function findById($id)
+    {
+        return static::findOne(['user_id' => $id]);
+    }
+
     public function getId()
     {
         return $this->user_id;
@@ -114,4 +119,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword($password){
         return Encrypt::encrypt($password) === $this->password;
     }
+
+    // public function  beforeSave($insert)
+    // {
+    //     if (parent::beforeSave($insert)) {
+    //         if ($insert){
+    //         }
+    //         else{
+    //             $pass = $this->password;
+    //             $this->password =$pass;
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 }

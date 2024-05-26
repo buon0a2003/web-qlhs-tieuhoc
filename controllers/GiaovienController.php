@@ -8,7 +8,8 @@ use app\models\Monhoc;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii;
+use app\models\User;
 /**
  * GiaovienController implements the CRUD actions for Giaovien model.
  */
@@ -39,6 +40,10 @@ class GiaovienController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
         $searchModel = new GiaovienSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -106,6 +111,33 @@ class GiaovienController extends Controller
         return $this->render('update', [
             'model' => $model,
             'monhocModel' => $monhocModel,
+        ]);
+    }
+
+    public function actionUpdateMatKhau()
+    {
+        $model = User::findById(Yii::$app->user->id);
+        $password = $model->password;
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) ) {
+            $matKhauCu = md5(Yii::$app->request->post('mat_khau_cu'));
+            $matKhauMoi = $model->password;
+            $repeatMatKhauMoi = Yii::$app->request->post('repeat_mat_khau_moi');
+            if ($matKhauCu == $password && $matKhauMoi == $repeatMatKhauMoi) {
+                $matKhauMoi = md5($matKhauMoi);
+                $model->password = $matKhauMoi;
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Cập nhật mật khẩu thành công.');
+                    return $this->redirect(['site/index']);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Đã xảy ra lỗi khi cập nhật mật khẩu.');
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Mật khẩu cũ không đúng hoặc mật khẩu mới không khớp.');
+            }
+        }
+
+        return $this->render('@app/views/giaovien/update-mat-khau', [
+            'model' => $model,
         ]);
     }
 

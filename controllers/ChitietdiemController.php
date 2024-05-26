@@ -46,6 +46,10 @@ class ChitietdiemController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
         $searchModel = new ViewChitietHsTienganhSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -65,6 +69,10 @@ class ChitietdiemController extends Controller
     
 
     public function actionIndexTiengviet(){
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
         $searchModel = new ViewChitietHsTiengvietSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -82,6 +90,9 @@ class ChitietdiemController extends Controller
     }
 
     public function actionIndexToan(){
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
         $searchModel = new ViewChitietHsToanSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 

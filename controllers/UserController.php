@@ -2,17 +2,17 @@
 
 namespace app\controllers;
 
-use app\models\Lop;
-use app\models\searchs\LopSearch;
+use app\models\User;
+use app\models\searchs\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii;
+use app\models\Role;
 
 /**
- * LopController implements the CRUD actions for Lop model.
+ * UserController implements the CRUD actions for User model.
  */
-class LopController extends Controller
+class UserController extends Controller
 {
     /**
      * @inheritDoc
@@ -33,17 +33,13 @@ class LopController extends Controller
     }
 
     /**
-     * Lists all Lop models.
+     * Lists all User models.
      *
      * @return string
      */
     public function actionIndex()
-    {   
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['site/login']);
-        }
-
-        $searchModel = new LopSearch();
+    {
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -53,30 +49,33 @@ class LopController extends Controller
     }
 
     /**
-     * Displays a single Lop model.
-     * @param int $lopid Lopid
+     * Displays a single User model.
+     * @param int $user_id User ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($lopid)
+    public function actionView($user_id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($lopid),
+            'model' => $this->findModel($user_id),
         ]);
     }
 
     /**
-     * Creates a new Lop model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Lop();
+        $model = new User();
+        $roleModel = Role::find()->all();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'lopid' => $model->lopid]);
+            if ($model->load($this->request->post())) {
+                $model->password = md5($model->password);
+                if ($model->save())
+                    return $this->redirect(['view', 'user_id' => $model->user_id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -84,57 +83,58 @@ class LopController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'roleModel' => $roleModel
         ]);
     }
 
     /**
-     * Updates an existing Lop model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $lopid Lopid
+     * @param int $user_id User ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($lopid)
+    public function actionUpdate($user_id)
     {
-        $model = $this->findModel($lopid);
+        $model = $this->findModel($user_id);
+        $roleModel = Role::find()->all();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'lopid' => $model->lopid]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->password = md5($model->password);
+            if ($model->save())
+                return $this->redirect(['view', 'user_id' => $model->user_id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'roleModel' => $roleModel
         ]);
     }
 
     /**
-     * Deletes an existing Lop model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $lopid Lopid
+     * @param int $user_id User ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($lopid)
-    {   
-        try{
-            $this->findModel($lopid)->delete();
-    
-            return $this->redirect(['index']);
-        }catch(\yii\db\IntegrityException $e){
-            throw new \yii\web\ForbiddenHttpException('Không thể xóa lớp nếu lớp vẫn còn Học sinh.');
-        }
+    public function actionDelete($user_id)
+    {
+        $this->findModel($user_id)->delete();
+
+        return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Lop model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $lopid Lopid
-     * @return Lop the loaded model
+     * @param int $user_id User ID
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($lopid)
+    protected function findModel($user_id)
     {
-        if (($model = Lop::findOne(['lopid' => $lopid])) !== null) {
+        if (($model = User::findOne(['user_id' => $user_id])) !== null) {
             return $model;
         }
 

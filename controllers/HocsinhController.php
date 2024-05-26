@@ -46,6 +46,10 @@ class HocsinhController extends Controller
         $searchModel = new HocsinhSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
         if (User::findIdentity(Yii::$app->user->id)->role_id == 3){
             return $this->render('@app/views/phuhuynh/hocsinh/index', [
                 'searchModel' => $searchModel,
